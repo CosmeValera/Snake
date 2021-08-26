@@ -37,7 +37,7 @@ public class SnakeGame {
             //GUI
             gL.updatedCellGrid(cellGrid, rows, columns);
             gP.paint(cellGrid, rows, columns);
-            Thread.sleep(1000);
+            Thread.sleep(200);
         }
 //        System.out.println("You've lost!");
     }

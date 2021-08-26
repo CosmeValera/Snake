@@ -49,11 +49,14 @@ public class GameLogic {
 //    }
 
     private void movement() {
+        Direction dir = snake.obtainFirstDirectionAvailableFromBuffer();
+        if (dir == null)
+            dir = snake.getLastDirection();
         if (collapseWithBody()) return;
-        if (moveRight(snake.getDirection())) return;
-        if (moveLeft(snake.getDirection())) return;
-        if (moveUp(snake.getDirection())) return;
-        if (moveDown(snake.getDirection())) return;
+        if (moveRight(dir)) return;
+        if (moveLeft(dir)) return;
+        if (moveUp(dir)) return;
+        if (moveDown(dir)) return;
     }
 
     private boolean moveDown(Direction dir) {

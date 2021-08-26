@@ -42,17 +42,17 @@ public class GUIPainter {
             @Override
             public void keyPressed(KeyEvent e) {
                 System.out.println("Key pressed");
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    snake.setDirection(Direction.RIGHT);
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT && snake.getLastDirection() != Direction.LEFT) {
+                    snake.insertDirectionToBuffer(Direction.RIGHT);
                     System.out.println("Key pressed right");
-                } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    snake.setDirection(Direction.LEFT);
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT && snake.getLastDirection() != Direction.RIGHT) {
+                    snake.insertDirectionToBuffer(Direction.LEFT);
                     System.out.println("Key LEFT");
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    snake.setDirection(Direction.DOWN);
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN && snake.getLastDirection() != Direction.UP) {
+                    snake.insertDirectionToBuffer(Direction.DOWN);
                     System.out.println("Key pressed down");
-                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    snake.setDirection(Direction.UP);
+                } else if (e.getKeyCode() == KeyEvent.VK_UP && snake.getLastDirection() != Direction.DOWN) {
+                    snake.insertDirectionToBuffer(Direction.UP);
                     System.out.println("Key pressed up");
                 }
             }
