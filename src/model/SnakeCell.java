@@ -1,17 +1,15 @@
 package model;
 
-import model.CellType;
-
-public class SnakeBody {
+public class SnakeCell {
     private CellType type;
     private int i;
     private int j;
 
-    public SnakeBody() {
+    public SnakeCell() {
         this.type = CellType.SNAKEBODY;
     }
-    public SnakeBody(int i, int j) {
-        this.type = CellType.SNAKEBODY;
+    public SnakeCell(int i, int j, CellType type) {
+        this.type = type;
         this.i = i;
         this.j = j;
     }

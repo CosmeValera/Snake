@@ -3,8 +3,7 @@ package model;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Main main = new Main();
-        SnakeGame sg = new SnakeGame();
+        SnakeGame sg = new SnakeGame(20,18);
         sg.play();
     }
 }
