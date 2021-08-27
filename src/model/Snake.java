@@ -11,8 +11,8 @@ public class Snake {
     public Snake() {
         List<SnakeCell> snakeBodyCreated = new LinkedList<>();
         snakeBodyCreated.add(new SnakeCell(0, 0, CellType.SNAKEBODY));
-        snakeBodyCreated.add(new SnakeCell(0, 1, CellType.SNAKEBODY));
-        snakeBodyCreated.add(new SnakeCell(0, 2, CellType.HEAD));
+        snakeBodyCreated.add(new SnakeCell(0, 0, CellType.SNAKEBODY));
+        snakeBodyCreated.add(new SnakeCell(1, 0, CellType.HEAD));
 
         insertDirectionToBuffer(Direction.RIGHT);
 

@@ -43,10 +43,6 @@ public class GameLogic {
         return snake.getBody().size() >= height * width;
     }
     public void updateCellGrid() {
-        movement();
-    }
-
-    private void movement() {
         Direction dir = snake.obtainFirstDirectionAvailableFromBuffer();
         if (dir == null)
             dir = snake.getLastDirection();

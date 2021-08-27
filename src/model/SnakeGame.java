@@ -28,9 +28,7 @@ public class SnakeGame {
         while (true) {
             //GUI
             System.out.println(snake.getDirectionsBuffer()[0] + ", " + snake.getDirectionsBuffer()[1] + ", " + snake.getDirectionsBuffer()[2]);
-            if (gL.isGameLost() != null) {
-                break;
-            }
+            if (gL.isGameLost() != null) break;
             gL.updateCellGrid();
             gP.paint(cellGrid, snake, rows, columns);
             Thread.sleep(300);
