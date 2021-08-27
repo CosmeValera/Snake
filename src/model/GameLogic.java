@@ -5,6 +5,7 @@ import view.GUIPainter;
 public class GameLogic {
     private int height;
     private int width;
+    private double timeInMilliseconds;
     private Snake snake;
     private CellType[][] cellGrid;
 
@@ -15,6 +16,7 @@ public class GameLogic {
         this.width = width;
         this.snake = snake;
         this.cellGrid = cellGrid;
+        timeInMilliseconds = 350;
         gameLost = null;
     }
 
@@ -30,7 +32,7 @@ public class GameLogic {
                 putFruit = false;
             }
         }
-        if (gameWon()){
+        if (gameWon()) {
             gameLost = false;
         } else if (putFruit) {
             cellGrid[i][j] = CellType.FRUIT;
@@ -39,9 +41,11 @@ public class GameLogic {
             createFruitAtRandom();
         }
     }
+
     private boolean gameWon() {
         return snake.getBody().size() >= height * width;
     }
+
     public void updateCellGrid() {
         Direction dir = snake.obtainFirstDirectionAvailableFromBuffer();
         if (dir == null)
@@ -160,4 +164,10 @@ public class GameLogic {
     public void setGameLost(boolean gameLost) {
         this.gameLost = gameLost;
     }
+
+    public double obtainTimeInMilliseconds() {
+        timeInMilliseconds = 400 - (((350 / (double)(height*width)) * snake.getBody().size()));
+        return timeInMilliseconds;
+    }
+
 }

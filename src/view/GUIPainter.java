@@ -58,10 +58,21 @@ public class GUIPainter {
         allBlack();
     }
 
-    public void paint(CellType[][] cellGrid, Snake snake, int height, int width) {
+    public static void changeFruitColor() {
+        int v = (int) (Math.random() * 3 + 1);
+        if (v == 1) {
+            fruitColor = Color.red;
+        } else if (v == 2) {
+            fruitColor = Color.green;
+        } else if (v == 3) {
+            fruitColor = Color.magenta;
+        }
+    }
+
+    public void paint(CellType[][] cellGrid, Snake snake, int height, int width, int timeMili) {
         allBlack();
         putSnakeInCellGrid(cellGrid, snake);
-        paintSnakeBodyAndFruits(cellGrid, snake, height, width);
+        paintSnakeBodyAndFruits(cellGrid, snake, height, width, timeMili);
     }
 
     public void paintLoseScreen(CellType[][] cellGrid, Snake snake, int height, int width) {
@@ -109,7 +120,7 @@ public class GUIPainter {
         }
     }
 
-    private void paintSnakeBodyAndFruits(CellType[][] cellGrid, Snake snake, int height, int width) {
+    private void paintSnakeBodyAndFruits(CellType[][] cellGrid, Snake snake, int height, int width, int timeMili) {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -131,16 +142,7 @@ public class GUIPainter {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Serif", Font.PLAIN, 20));
         g.drawString("Points: " + snake.getBody().size(), LENGTH, LENGTH);
-    }
-
-    public static void changeFruitColor() {
-        int v = (int) (Math.random() * 3 + 1);
-        if (v == 1) {
-            fruitColor = Color.red;
-        } else if (v == 2) {
-            fruitColor = Color.green;
-        } else if (v == 3) {
-            fruitColor = Color.magenta;
-        }
+        g.drawString("Speed: " + timeMili, (int) ((double) LENGTH * rows / (rows > 15 ? 1.1 :
+                (rows > 8 ? 1.2 : 1.35))) - LENGTH * 2, LENGTH * (rows > 7 ? 1 : 2));
     }
 }
