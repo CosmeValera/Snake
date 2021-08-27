@@ -13,7 +13,6 @@ public class Snake {
         snakeBodyCreated.add(new SnakeCell(0, 0, CellType.SNAKEBODY));
         snakeBodyCreated.add(new SnakeCell(0, 1, CellType.SNAKEBODY));
         snakeBodyCreated.add(new SnakeCell(0, 2, CellType.HEAD));
-        snakeBodyCreated.add(new SnakeCell(0, 3, CellType.HEAD));
 
         insertDirectionToBuffer(Direction.RIGHT);
 
@@ -22,29 +21,42 @@ public class Snake {
 
     public void insertDirectionToBuffer(Direction dir) {
         if (directionsBuffer[0] == null) {
-            directionsBuffer[0] = dir;
+            if (dir != lastDirection
+                    && dir != Direction.oppositeDirection(lastDirection)) {
+                directionsBuffer[0] = dir;
+            }
         } else if (directionsBuffer[1] == null) {
-            directionsBuffer[1] = dir;
-
+            if (dir != directionsBuffer[0]
+                    && dir != Direction.oppositeDirection(directionsBuffer[0])) {
+                directionsBuffer[1] = dir;
+            }
         } else if (directionsBuffer[2] == null) {
-            directionsBuffer[2] = dir;
+            if (dir != directionsBuffer[1]
+                    && dir != Direction.oppositeDirection(directionsBuffer[1])) {
+                directionsBuffer[2] = dir;
+            }
         }
     }
 
     public Direction obtainFirstDirectionAvailableFromBuffer() {
         Direction dir = null;
-        if (directionsBuffer[2] != null) {
-            dir = directionsBuffer[2];
-            lastDirection = directionsBuffer[2];
+        if (directionsBuffer[0] != null) {
+            dir = directionsBuffer[0];
+            lastDirection = dir;
+            directionsBuffer[0] = null;
+            directionsBuffer[0] = directionsBuffer[1];
+            directionsBuffer[1] = directionsBuffer[2];
             directionsBuffer[2] = null;
         } else if (directionsBuffer[1] != null) {
             dir = directionsBuffer[1];
-            lastDirection = directionsBuffer[1];
+            lastDirection = dir;
             directionsBuffer[1] = null;
-        } else if (directionsBuffer[0] != null) {
-            dir = directionsBuffer[0];
-            lastDirection = directionsBuffer[0];
-            directionsBuffer[0] = null;
+            directionsBuffer[1] = directionsBuffer[2];
+            directionsBuffer[2] = null;
+        } else if (directionsBuffer[2] != null) {
+            dir = directionsBuffer[2];
+            lastDirection = dir;
+            directionsBuffer[2] = null;
         }
         return dir;
     }

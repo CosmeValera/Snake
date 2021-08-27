@@ -3,6 +3,7 @@ package view;
 import model.CellType;
 import model.Direction;
 import model.Snake;
+import model.SnakeCell;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,17 +42,16 @@ public class GUIPainter {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println("Key pressed");
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT && snake.getLastDirection() != Direction.LEFT) {
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     snake.insertDirectionToBuffer(Direction.RIGHT);
                     System.out.println("Key pressed right");
-                } else if (e.getKeyCode() == KeyEvent.VK_LEFT && snake.getLastDirection() != Direction.RIGHT) {
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     snake.insertDirectionToBuffer(Direction.LEFT);
                     System.out.println("Key LEFT");
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN && snake.getLastDirection() != Direction.UP) {
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     snake.insertDirectionToBuffer(Direction.DOWN);
                     System.out.println("Key pressed down");
-                } else if (e.getKeyCode() == KeyEvent.VK_UP && snake.getLastDirection() != Direction.DOWN) {
+                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
                     snake.insertDirectionToBuffer(Direction.UP);
                     System.out.println("Key pressed up");
                 }
@@ -62,8 +62,24 @@ public class GUIPainter {
         allBlack();
     }
 
-    public void paint(CellType[][] cellGrid, int height, int width) {
+    public void paint(CellType[][] cellGrid, Snake snake, int height, int width) {
         allBlack();
+        putSnakeInCellGrid(cellGrid, snake);
+        paintSnakeBodyAndFruits(cellGrid, height, width);
+    }
+
+    private void allBlack() {
+        g.setColor(Color.black);
+        g.fillRect(0, 0, rows * LENGTH + 15, columns * LENGTH + 45);
+    }
+
+    private void putSnakeInCellGrid(CellType[][] cellGrid, Snake snake) {
+        for (SnakeCell pieceOfBody : snake.getBody()) {
+            cellGrid[pieceOfBody.getI()][pieceOfBody.getJ()] = pieceOfBody.getType();
+        }
+    }
+
+    private void paintSnakeBodyAndFruits(CellType[][] cellGrid, int height, int width) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (cellGrid[i][j] == null || cellGrid[i][j].equals(CellType.EMPTY)) {
@@ -75,7 +91,6 @@ public class GUIPainter {
                 } else if (cellGrid[i][j].equals(CellType.FRUIT)) {
                     g.setColor(Color.red);
                 }
-//                g.fillOval(i * 78, j * 74, (int) (780 / width * 0.9), (int) (740 / height * 0.9));
                 g.fillOval((int) ((i + 0.33) * LENGTH),
                         (int) ((j + 0.33) * LENGTH),
                         (int) (0.8 * LENGTH),
@@ -84,8 +99,4 @@ public class GUIPainter {
         }
     }
 
-    private void allBlack() {
-        g.setColor(Color.black);
-        g.fillRect(0, 0, rows * LENGTH + 15, columns * LENGTH + 45);
-    }
 }

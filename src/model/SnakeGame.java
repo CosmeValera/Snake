@@ -24,20 +24,21 @@ public class SnakeGame {
         GameLogic gL = new GameLogic(rows, columns, snake, cellGrid);
         gL.createFruitAtRandom();
 
-        GUIPainter gP = new GUIPainter(rows,columns, snake);
+        GUIPainter gP = new GUIPainter(rows, columns, snake);
         while (true) {
             //LOGIC
-            for (SnakeCell pieceOfBody : snake.getBody()) {
-                cellGrid[pieceOfBody.getI()][pieceOfBody.getJ()] = pieceOfBody.getType();
-            }
+//            for (SnakeCell pieceOfBody : snake.getBody()) {
+//                cellGrid[pieceOfBody.getI()][pieceOfBody.getJ()] = pieceOfBody.getType();
+//            }
 
 //            //CONSOLE
 //            if (gL.updatedCellGrid(cellGrid, height, width)) break;
 
             //GUI
-            gL.updatedCellGrid(cellGrid, rows, columns);
-            gP.paint(cellGrid, rows, columns);
-            Thread.sleep(200);
+            System.out.println(snake.getDirectionsBuffer()[0] + ", " + snake.getDirectionsBuffer()[1] + ", " + snake.getDirectionsBuffer()[2]);
+            gL.updateCellGrid(cellGrid, rows, columns);
+            gP.paint(cellGrid, snake, rows, columns);
+            Thread.sleep(2000);
         }
 //        System.out.println("You've lost!");
     }

@@ -1,7 +1,5 @@
 package model;
 
-import view.PaintConsole;
-
 import java.util.Scanner;
 
 public class GameLogic {
@@ -36,7 +34,7 @@ public class GameLogic {
         }
     }
 
-    public void updatedCellGrid(CellType[][] cellGrid, int HEIGHT, int WIDTH) {
+    public void updateCellGrid(CellType[][] cellGrid, int HEIGHT, int WIDTH) {
         movement();
     }
 
@@ -52,7 +50,7 @@ public class GameLogic {
         Direction dir = snake.obtainFirstDirectionAvailableFromBuffer();
         if (dir == null)
             dir = snake.getLastDirection();
-        if (collapseWithBody()) return;
+        if (collapseWithBodyOrWall()) return;
         if (moveRight(dir)) return;
         if (moveLeft(dir)) return;
         if (moveUp(dir)) return;
@@ -60,7 +58,7 @@ public class GameLogic {
     }
 
     private boolean moveDown(Direction dir) {
-        if (dir == Direction.DOWN) {//MOve right
+        if (dir == Direction.DOWN) {
             if (snake.getBody().get(snake.getBody().size() - 1).getJ() + 1 >= width) {
                 return true;
             }
@@ -143,14 +141,19 @@ public class GameLogic {
         }
     }
 
-    private boolean collapseWithBody() {
+    private boolean collapseWithBodyOrWall() {
         for (int i = 0; i < snake.getBody().size() - 1; i++) {
             SnakeCell bodyPiece = snake.getBody().get(i);
             if (bodyPiece.getI() == snake.getBody().get(snake.getBody().size() - 1).getI()
                     && bodyPiece.getJ() == snake.getBody().get(snake.getBody().size() - 1).getJ()) {
                 return true;
             }
+            if (bodyPiece.getI()<0 ||bodyPiece.getI()>height
+                || bodyPiece.getJ()<0 ||bodyPiece.getJ()>width) {
+                return true;
+            }
         }
+
         return false;
     }
 }
