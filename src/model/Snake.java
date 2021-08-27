@@ -12,13 +12,9 @@ public class Snake {
         List<SnakeCell> snakeBodyCreated = new LinkedList<>();
         snakeBodyCreated.add(new SnakeCell(0, 0, CellType.SNAKEBODY));
         snakeBodyCreated.add(new SnakeCell(0, 1, CellType.SNAKEBODY));
-        snakeBodyCreated.add(new SnakeCell(1, 1, CellType.SNAKEBODY));
-        snakeBodyCreated.add(new SnakeCell(2, 1, CellType.SNAKEBODY));
-        snakeBodyCreated.add(new SnakeCell(2, 2, CellType.SNAKEBODY));
-        snakeBodyCreated.add(new SnakeCell(2, 3, CellType.SNAKEBODY));
-        snakeBodyCreated.add(new SnakeCell(2, 4, CellType.HEAD));
+        snakeBodyCreated.add(new SnakeCell(0, 2, CellType.HEAD));
 
-        insertDirectionToBuffer(Direction.LEFT);
+        insertDirectionToBuffer(Direction.RIGHT);
 
         this.body = snakeBodyCreated;
     }
