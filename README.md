@@ -1,2 +1,2 @@
 # Snake
-## The game in which you control a snake and you have to seek for food while avoiding hitting the borders neither your own body.
+### The game in which you control a snake and you have to seek food while avoiding hitting neither the borders nor your own body.

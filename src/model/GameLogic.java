@@ -1,5 +1,7 @@
 package model;
 
+import view.GUIPainter;
+
 public class GameLogic {
     private int height;
     private int width;
@@ -29,6 +31,7 @@ public class GameLogic {
         }
         if (putFruit) {
             cellGrid[i][j] = CellType.FRUIT;
+            GUIPainter.changeFruitColor();
         } else {
             createFruitAtRandom();
         }

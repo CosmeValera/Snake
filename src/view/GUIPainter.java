@@ -11,9 +11,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class GUIPainter {
-
     public static final int LENGTH = 30;
 
+    public static Color fruitColor = Color.RED;
     private int rows;
     private int columns;
 
@@ -63,10 +63,11 @@ public class GUIPainter {
         putSnakeInCellGrid(cellGrid, snake);
         paintSnakeBodyAndFruits(cellGrid, height, width);
     }
-    public void paintLoseScreen (CellType[][] cellGrid, Snake snake, int height, int width) {
+
+    public void paintLoseScreen(CellType[][] cellGrid, Snake snake, int height, int width) {
 //        allBlack();
         int points = calculatePoints(snake);
-        JLabel label =new JLabel("<html> You have lost.<br/> Points: " + points + " </html>");
+        JLabel label = new JLabel("<html> You have lost.<br/> Points: " + points + " </html>");
         label.setOpaque(true);
         label.setBackground(Color.black);
         label.setForeground(Color.white);
@@ -79,13 +80,14 @@ public class GUIPainter {
 //        allBlack();
     }
 
-    private int calculatePoints(Snake snake){
+    private int calculatePoints(Snake snake) {
         int i;
         for (i = 0; i < snake.getBody().size(); i++) {
 
         }
         return i;
     }
+
     private void allBlack() {
         g.setColor(Color.black);
         g.fillRect(0, 0, rows * LENGTH + 15, columns * LENGTH + 45);
@@ -107,7 +109,7 @@ public class GUIPainter {
                 } else if (cellGrid[i][j].equals(CellType.HEAD)) {
                     g.setColor(Color.blue);
                 } else if (cellGrid[i][j].equals(CellType.FRUIT)) {
-                    g.setColor(Color.red);
+                    g.setColor(fruitColor);
                 }
                 g.fillOval((int) ((i + 0.33) * LENGTH),
                         (int) ((j + 0.33) * LENGTH),
@@ -117,4 +119,14 @@ public class GUIPainter {
         }
     }
 
+    public static void changeFruitColor() {
+        int v = (int) (Math.random() * 3 + 1);
+        if (v == 1) {
+            fruitColor = Color.red;
+        } else if (v == 2) {
+            fruitColor = Color.green;
+        } else if (v == 3) {
+            fruitColor = Color.magenta;
+        }
+    }
 }
