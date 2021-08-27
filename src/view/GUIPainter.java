@@ -81,11 +81,21 @@ public class GUIPainter {
     }
 
     private int calculatePoints(Snake snake) {
-        int i;
-        for (i = 0; i < snake.getBody().size(); i++) {
+        return snake.getBody().size();
+    }
 
-        }
-        return i;
+    public void paintWinScreen(CellType[][] cellGrid, Snake snake, int height, int width) {
+        int points = calculatePoints(snake);
+        JLabel label = new JLabel("<html> You have won.<br/> Points: " + points + " </html>");
+        label.setOpaque(true);
+        label.setBackground(Color.black);
+        label.setForeground(Color.white);
+
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setFont(new Font("Serif", Font.PLAIN, 40));
+        panel.add(label); // adding a label will automatically invalidate the component
+        panel.revalidate();
+        panel.repaint(); // you need to repaint
     }
 
     private void allBlack() {

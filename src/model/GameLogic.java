@@ -8,17 +8,18 @@ public class GameLogic {
     private Snake snake;
     private CellType[][] cellGrid;
 
-    private boolean gameLost;
+    private Boolean gameLost;
 
     public GameLogic(int height, int width, Snake snake, CellType[][] cellGrid) {
         this.height = height;
         this.width = width;
         this.snake = snake;
         this.cellGrid = cellGrid;
-        gameLost = false;
+        gameLost = null;
     }
 
     public void createFruitAtRandom() {
+
         int i = (int) (Math.random() * height);
         int j = (int) (Math.random() * width);
         boolean putFruit = true;
@@ -29,14 +30,18 @@ public class GameLogic {
                 putFruit = false;
             }
         }
-        if (putFruit) {
+        if (gameWon()){
+            gameLost = false;
+        } else if (putFruit) {
             cellGrid[i][j] = CellType.FRUIT;
             GUIPainter.changeFruitColor();
         } else {
             createFruitAtRandom();
         }
     }
-
+    private boolean gameWon() {
+        return snake.getBody().size() >= height * width;
+    }
     public void updateCellGrid() {
         movement();
     }
@@ -152,7 +157,7 @@ public class GameLogic {
         return false;
     }
 
-    public boolean isGameLost() {
+    public Boolean isGameLost() {
         return gameLost;
     }
 
