@@ -44,16 +44,12 @@ public class GUIPainter {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     snake.insertDirectionToBuffer(Direction.RIGHT);
-                    System.out.println("Key pressed right");
                 } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     snake.insertDirectionToBuffer(Direction.LEFT);
-                    System.out.println("Key LEFT");
                 } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     snake.insertDirectionToBuffer(Direction.DOWN);
-                    System.out.println("Key pressed down");
                 } else if (e.getKeyCode() == KeyEvent.VK_UP) {
                     snake.insertDirectionToBuffer(Direction.UP);
-                    System.out.println("Key pressed up");
                 }
             }
         });
@@ -67,7 +63,29 @@ public class GUIPainter {
         putSnakeInCellGrid(cellGrid, snake);
         paintSnakeBodyAndFruits(cellGrid, height, width);
     }
+    public void paintLoseScreen (CellType[][] cellGrid, Snake snake, int height, int width) {
+//        allBlack();
+        int points = calculatePoints(snake);
+        JLabel label =new JLabel("<html> You have lost.<br/> Points: " + points + " </html>");
+        label.setOpaque(true);
+        label.setBackground(Color.black);
+        label.setForeground(Color.white);
 
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setFont(new Font("Serif", Font.PLAIN, 40));
+        panel.add(label); // adding a label will automatically invalidate the component
+        panel.revalidate();
+        panel.repaint(); // you need to repaint
+//        allBlack();
+    }
+
+    private int calculatePoints(Snake snake){
+        int i;
+        for (i = 0; i < snake.getBody().size(); i++) {
+
+        }
+        return i;
+    }
     private void allBlack() {
         g.setColor(Color.black);
         g.fillRect(0, 0, rows * LENGTH + 15, columns * LENGTH + 45);

@@ -1,19 +1,19 @@
 package model;
 
-import java.util.Scanner;
-
 public class GameLogic {
-    public static Scanner in = new Scanner(System.in);
     private int height;
     private int width;
     private Snake snake;
     private CellType[][] cellGrid;
+
+    private boolean gameLost;
 
     public GameLogic(int height, int width, Snake snake, CellType[][] cellGrid) {
         this.height = height;
         this.width = width;
         this.snake = snake;
         this.cellGrid = cellGrid;
+        gameLost = false;
     }
 
     public void createFruitAtRandom() {
@@ -34,23 +34,15 @@ public class GameLogic {
         }
     }
 
-    public void updateCellGrid(CellType[][] cellGrid, int HEIGHT, int WIDTH) {
+    public void updateCellGrid() {
         movement();
     }
-
-//    private boolean consolePaintAndMove(CellType[][] cellGrid, int HEIGHT, int WIDTH) {
-////        PaintConsole pc = new PaintConsole();
-////        pc.paint(cellGrid, HEIGHT, WIDTH);
-//
-//        if (movement()) return true;
-//        return false;
-//    }
 
     private void movement() {
         Direction dir = snake.obtainFirstDirectionAvailableFromBuffer();
         if (dir == null)
             dir = snake.getLastDirection();
-        if (collapseWithBodyOrWall()) return;
+        if (collapseWithBody()) return;
         if (moveRight(dir)) return;
         if (moveLeft(dir)) return;
         if (moveUp(dir)) return;
@@ -60,6 +52,7 @@ public class GameLogic {
     private boolean moveDown(Direction dir) {
         if (dir == Direction.DOWN) {
             if (snake.getBody().get(snake.getBody().size() - 1).getJ() + 1 >= width) {
+                gameLost = true;
                 return true;
             }
             oldHeadTurnsToBody();
@@ -76,6 +69,7 @@ public class GameLogic {
     private boolean moveUp(Direction dir) {
         if (dir == Direction.UP) {
             if (snake.getBody().get(snake.getBody().size() - 1).getJ() - 1 < 0) {
+                gameLost = true;
                 return true;
             }
             oldHeadTurnsToBody();
@@ -92,6 +86,7 @@ public class GameLogic {
     private boolean moveLeft(Direction dir) {
         if (dir == Direction.LEFT) {
             if (snake.getBody().get(snake.getBody().size() - 1).getI() - 1 < 0) {
+                gameLost = true;
                 return true;
             }
             oldHeadTurnsToBody();
@@ -108,6 +103,7 @@ public class GameLogic {
     private boolean moveRight(Direction dir) {
         if (dir == Direction.RIGHT) {
             if (snake.getBody().get(snake.getBody().size() - 1).getI() + 1 >= height) {
+                gameLost = true;
                 return true;
             }
             oldHeadTurnsToBody();
@@ -141,19 +137,23 @@ public class GameLogic {
         }
     }
 
-    private boolean collapseWithBodyOrWall() {
+    private boolean collapseWithBody() {
         for (int i = 0; i < snake.getBody().size() - 1; i++) {
             SnakeCell bodyPiece = snake.getBody().get(i);
             if (bodyPiece.getI() == snake.getBody().get(snake.getBody().size() - 1).getI()
                     && bodyPiece.getJ() == snake.getBody().get(snake.getBody().size() - 1).getJ()) {
-                return true;
-            }
-            if (bodyPiece.getI()<0 ||bodyPiece.getI()>height
-                || bodyPiece.getJ()<0 ||bodyPiece.getJ()>width) {
+                gameLost = true;
                 return true;
             }
         }
-
         return false;
+    }
+
+    public boolean isGameLost() {
+        return gameLost;
+    }
+
+    public void setGameLost(boolean gameLost) {
+        this.gameLost = gameLost;
     }
 }
