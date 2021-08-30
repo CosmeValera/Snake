@@ -21,29 +21,53 @@ public class GameLogic {
     }
 
     public void createFruitAtRandom() {
-
-        int i = (int) (Math.random() * height);
-        int j = (int) (Math.random() * width);
+        int posIFruit = (int) (Math.random() * height);
+        int posJFruit = (int) (Math.random() * width);
         boolean putFruit = true;
 
         for (SnakeCell sb : snake.getBody()) {
-            if (sb.getI() == i
-                    && sb.getJ() == j) {
+            if (sb.getI() == posIFruit
+                    && sb.getJ() == posJFruit) {
                 putFruit = false;
             }
         }
+        if (cellGrid[posIFruit][posJFruit] != null && cellGrid[posIFruit][posJFruit].equals(CellType.WALL)) {
+            putFruit = false;
+        }
+
         if (gameWon()) {
             gameLost = false;
         } else if (putFruit) {
-            cellGrid[i][j] = CellType.FRUIT;
+            putWallIfAppropriate();
+            cellGrid[posIFruit][posJFruit] = CellType.FRUIT;
             GUIPainter.changeFruitColor();
         } else {
             createFruitAtRandom();
         }
     }
 
+    private void putWallIfAppropriate() {
+        int i = (int) (Math.random() * height);
+        int j = (int) (Math.random() * width);
+        if (snake.getBody().size() % 8 == 0) {
+            if (cellGrid[i][j] == null || cellGrid[i][j] == CellType.EMPTY)
+                cellGrid[i][j] = CellType.WALL;
+            else
+                putWallIfAppropriate();
+        }
+    }
+
     private boolean gameWon() {
-        return snake.getBody().size() >= height * width;
+        int walls = 0;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (cellGrid[i][j] != null && cellGrid[i][j].equals(CellType.WALL)) {
+                    walls += 1;
+                }
+            }
+        }
+        boolean isGameWon = snake.getBody().size() + walls >= height * width;
+        return isGameWon;
     }
 
     public void updateCellGrid() {
@@ -59,15 +83,14 @@ public class GameLogic {
 
     private boolean moveDown(Direction dir) {
         if (dir == Direction.DOWN) {
-            if (snake.getBody().get(snake.getBody().size() - 1).getJ() + 1 >= width) {
-                gameLost = true;
-                return true;
-            }
             oldHeadTurnsToBody();
             SnakeCell sC = createNewHead();
             sC.setI(snake.getBody().get(snake.getBody().size() - 1).getI());
             sC.setJ(snake.getBody().get(snake.getBody().size() - 1).getJ() + 1);
             snake.getBody().add(sC);
+            if (hitBorderOrWallThenLose()) {
+                return true;
+            }
             checkFruitOrRemoveTail();
             return true;
         }
@@ -76,15 +99,14 @@ public class GameLogic {
 
     private boolean moveUp(Direction dir) {
         if (dir == Direction.UP) {
-            if (snake.getBody().get(snake.getBody().size() - 1).getJ() - 1 < 0) {
-                gameLost = true;
-                return true;
-            }
             oldHeadTurnsToBody();
             SnakeCell sC = createNewHead();
             sC.setI(snake.getBody().get(snake.getBody().size() - 1).getI());
             sC.setJ(snake.getBody().get(snake.getBody().size() - 1).getJ() - 1);
             snake.getBody().add(sC);
+            if (hitBorderOrWallThenLose()) {
+                return true;
+            }
             checkFruitOrRemoveTail();
             return true;
         }
@@ -93,15 +115,14 @@ public class GameLogic {
 
     private boolean moveLeft(Direction dir) {
         if (dir == Direction.LEFT) {
-            if (snake.getBody().get(snake.getBody().size() - 1).getI() - 1 < 0) {
-                gameLost = true;
-                return true;
-            }
             oldHeadTurnsToBody();
             SnakeCell sC = createNewHead();
             sC.setI(snake.getBody().get(snake.getBody().size() - 1).getI() - 1);
             sC.setJ(snake.getBody().get(snake.getBody().size() - 1).getJ());
             snake.getBody().add(sC);
+            if (hitBorderOrWallThenLose()) {
+                return true;
+            }
             checkFruitOrRemoveTail();
             return true;
         }
@@ -110,15 +131,14 @@ public class GameLogic {
 
     private boolean moveRight(Direction dir) {
         if (dir == Direction.RIGHT) {
-            if (snake.getBody().get(snake.getBody().size() - 1).getI() + 1 >= height) {
-                gameLost = true;
-                return true;
-            }
             oldHeadTurnsToBody();
             SnakeCell sC = createNewHead();
             sC.setI(snake.getBody().get(snake.getBody().size() - 1).getI() + 1);
             sC.setJ(snake.getBody().get(snake.getBody().size() - 1).getJ());
             snake.getBody().add(sC);
+            if (hitBorderOrWallThenLose()) {
+                return true;
+            }
             checkFruitOrRemoveTail();
             return true;
         }
@@ -145,6 +165,28 @@ public class GameLogic {
         }
     }
 
+    private boolean hitBorderOrWallThenLose() {
+        if (hitsBorder() || hitsAWall()) {
+            gameLost = true;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean hitsBorder() {
+        if (snake.getBody().get(snake.getBody().size() - 1).getJ() >= width ||
+                snake.getBody().get(snake.getBody().size() - 1).getJ() < 0 ||
+                snake.getBody().get(snake.getBody().size() - 1).getI() < 0 ||
+                snake.getBody().get(snake.getBody().size() - 1).getI() >= height) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean hitsAWall() {
+        return cellGrid[snake.getBody().get(snake.getBody().size() - 1).getI()][snake.getBody().get(snake.getBody().size() - 1).getJ()] == CellType.WALL;
+    }
+
     private boolean collapseWithBody() {
         for (int i = 0; i < snake.getBody().size() - 1; i++) {
             SnakeCell bodyPiece = snake.getBody().get(i);
@@ -166,7 +208,7 @@ public class GameLogic {
     }
 
     public double obtainTimeInMilliseconds() {
-        timeInMilliseconds = 400 - (((350 / (double)(height*width)) * snake.getBody().size()));
+        timeInMilliseconds = 400 - (((350 / (double) (height * width)) * snake.getBody().size()));
         return timeInMilliseconds;
     }
 

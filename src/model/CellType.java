@@ -1,5 +1,5 @@
 package model;
 
 public enum CellType {
-    EMPTY, SNAKEBODY, HEAD, FRUIT
+    EMPTY, SNAKEBODY, HEAD, FRUIT, WALL
 }

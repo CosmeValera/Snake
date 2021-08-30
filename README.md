@@ -1,2 +1,2 @@
 # Snake
-### The game in which you control a snake and you have to seek food while avoiding hitting neither the borders nor your own body.
+### You control a snake and it has a movement buffer implemented to be able to cast several directions and execute them in order. The objective of the game is to seek food while avoiding hitting neither the borders nor your own body.

@@ -116,7 +116,9 @@ public class GUIPainter {
 
     private void putSnakeInCellGrid(CellType[][] cellGrid, Snake snake) {
         for (SnakeCell pieceOfBody : snake.getBody()) {
-            cellGrid[pieceOfBody.getI()][pieceOfBody.getJ()] = pieceOfBody.getType();
+            if (pieceOfBody.getI()>= 0 && pieceOfBody.getJ()>= 0 && pieceOfBody.getI() < rows && pieceOfBody.getJ() < columns) {
+                cellGrid[pieceOfBody.getI()][pieceOfBody.getJ()] = pieceOfBody.getType();
+            }
         }
     }
 
@@ -132,6 +134,8 @@ public class GUIPainter {
                     g.setColor(Color.blue);
                 } else if (cellGrid[i][j].equals(CellType.FRUIT)) {
                     g.setColor(fruitColor);
+                } else if (cellGrid[i][j].equals(CellType.WALL)) {
+                    g.setColor(Color.pink);
                 }
                 g.fillOval((int) ((i + 0.33) * LENGTH),
                         (int) ((j + 0.33) * LENGTH),
