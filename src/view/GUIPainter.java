@@ -136,6 +136,10 @@ public class GUIPainter {
                     g.setColor(fruitColor);
                 } else if (cellGrid[i][j].equals(CellType.WALL)) {
                     g.setColor(Color.pink);
+                    g.fillRect((int) ((i + 0.33) * LENGTH),
+                            (int) ((j + 0.33) * LENGTH),
+                            (int) (0.8 * LENGTH),
+                            (int) (0.8 * LENGTH));
                 }
                 g.fillOval((int) ((i + 0.33) * LENGTH),
                         (int) ((j + 0.33) * LENGTH),
